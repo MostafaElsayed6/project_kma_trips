@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <title>الرحلات المائية</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/bootstrap4/bootstrap.min.css' %}">
+    <link href="{% static 'plugins/font-awesome-4.7.0/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/main_styles.css' %}">
+</head>
+<body>
+    <div class="super_container">
+        <header class="header">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="header_content d-flex flex-row align-items-center justify-content-start">
+                            <div class="logo">
+                                <a href="#"><img src="{% static 'images/logo.png' %}" alt=""></a>
+                            </div>
+                            <nav class="main_nav">
+                                <ul>
+                                    <li><a href="{% url 'home' %}">الرئيسية</a></li>
+                                    <li><a href="{% url 'trips:trip_list' %}">الرحلات</a></li>
+                                    {% comment %} <li class="active"><a href="{% url 'home' %}">الرئيسية</a></li> {% endcomment %}
+                                    {% comment %} <li><a href="{% url 'trip_list' %}">الرحلات</a></li> {% endcomment %}
+                                    <li><a href="{% url 'about' %}">معلومات عنا</a></li>
+                                    {% comment %} <li><a href="{% url 'contact' %}">تواصل معنا</a></li> {% endcomment %}
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <div class="home_slider_container">
+            <div class="owl-carousel owl-theme home_slider">
+                {% for slide in slides %}
+                <div class="owl-item">
+                    <div class="home_slider_background" style="background-image:url({{ slide.image.url }})"></div>
+                    <div class="slide_container">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="slide_content">
+                                        <div class="home_subtitle">اكتشف</div>
+                                        <div class="home_title">{{ slide.title }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="recent">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="section_title">رحلات مائية لا مثيل لها</div>
+                    </div>
+                </div>
+                <div class="row recent_row">
+                    {% for trip in trips %}
+                    <div class="col-xl-4 col-lg-6 property_col">
+                        <div class="property">
+                            <div class="property_image">
+                                <img src="{{ trip.image.url }}" alt="">
+                            </div>
+                            <div class="property_body text-center">
+                                <div class="property_location">{{ trip.title }}</div>
+                                <div class="property_title"><a href="{% url 'trip_detail' trip.id %}">{{ trip.description }}</a></div>
+                                <div class="property_price">{{ trip.price }} EGP</div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+        <script src="{% static 'styles/bootstrap4/popper.js' %}"></script>
+        <script src="{% static 'styles/bootstrap4/bootstrap.min.js' %}"></script>
+        <script src="{% static 'js/custom.js' %}"></script>
+    </div>
+</body>
+</html>

@@ -1,0 +1,8 @@
+{% for booking in bookings %}
+<div class="booking">
+    <h3>{{ booking.trip.title }}</h3>
+    <p>عدد الأماكن: {{ booking.seats }}</p>
+    <p>التاريخ: {{ booking.booked_at }}</p>
+    <p>الحالة: {{ booking.status }}</p>
+</div>
+{% endfor %}

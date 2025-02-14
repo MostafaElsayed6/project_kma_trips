@@ -1,0 +1,35 @@
+<!-- بدلًا من: -->
+<link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
+
+
+
+<!-- مثال للرابط في القائمة: -->
+<li><a href="{% url 'home' %}">الرئيسية</a></li>
+<li><a href="{% url 'trips:trip_list' %}">الرحلات</a></li>
+
+<!-- استخدم: -->
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/bootstrap4/bootstrap.min.css' %}">
+
+<div class="recent_slider_container">
+    <div class="owl-carousel owl-theme recent_slider">
+        {% for trip in featured_trips %}
+        <div class="owl-item">
+            <div class="recent_item">
+                <div class="recent_item_inner">
+                    <div class="recent_item_image">
+                        <img src="{{ trip.image.url }}" alt="{{ trip.title }}">
+                    </div>
+                    <div class="recent_item_body text-center">
+                        <div class="recent_item_location">{{ trip.location }}</div>
+                        <div class="recent_item_title">
+                            <a href="{% url 'trips:trip_detail' trip.id %}">{{ trip.title }}</a>
+                        </div>
+                        <div class="recent_item_price">{{ trip.price }} EGP</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
