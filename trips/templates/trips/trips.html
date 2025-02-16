@@ -1,8 +1,7 @@
 --- START OF FILE trips.html ---
 {% load static %}
-
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" static>
 
 <head>
 	<title>رحلات مائية في مصر</title>
@@ -20,8 +19,11 @@
 </head>
 
 <body>
+
 	<div class="super_container">
+
 		<!-- الرأس -->
+
 		<header class="header">
 			<div class="container">
 				<div class="row">
@@ -32,12 +34,10 @@
 							</div>
 							<nav class="main_nav">
 								<ul>
-									{% comment %} <li><a href="{% url 'trip' %}">الرئيسية</a></li> {% endcomment %}
 									<li ><a href="{%url 'Trip'%}">الرئيسية</a></li>
 									<li><a href="{%url 'trips_list'%}">الرحلات</a></li>
 									<li><a href="{%url 'about'%}">معلومات عنا</a></li>
 									<li><a href="{%url 'contact'%}">تواصل معنا</a></li>
-									hjklhjk
 								</ul>
 							</nav>
 							<div class="phone_num ml-auto">
@@ -51,7 +51,9 @@
 				</div>
 			</div>
 		</header>
+
 		<!-- القائمة -->
+
 		<div class="menu trans_500">
 			<div class="menu_content d-flex flex-column align-items-center justify-content-center text-center">
 				<div class="menu_close_container">
@@ -66,7 +68,6 @@
 						</div>
 					</a>
 				</div>
-			</div>
 				<ul>
 					<li ><a href="{%url 'Trip'%}">الرئيسية</a></li>
 					<li><a href="{%url 'trips_list'%}">الرحلات</a></li>
@@ -76,7 +77,9 @@
 			</div>
 			<div class="menu_phone"><span>call us: </span>+20 127 587 9601</div>
 		</div>
+
 		<!-- الرئيسية -->
+
 		<div class="home">
 			<div class="parallax_background parallax-window" data-parallax="scroll" data-image-src="{% static 'images/contact.jpg' %}"
 				data-speed="0.8"></div>
@@ -94,7 +97,9 @@
 				</div>
 			</div>
 		</div>
+
 		<!-- احدث الرحلات -->
+
 		<div class="properties">
 			<div class="container">
 				<div class="row">
@@ -128,10 +133,13 @@
                     </div>
                     {% endfor %}
 				</div>
+				</div>
 			</div>
-			</div>
-			<!-- التزييل 1 -->
-			<div class="newsletter">
+		</div>
+
+		<!-- التزييل 1 -->
+
+		<div class="newsletter">
 			<div class="parallax_background parallax-window" data-parallax="scroll"
 				data-image-src="{% static 'images/first_footer.jpg' %}" data-speed="0.8"></div>
 			<div class="container">
@@ -146,9 +154,11 @@
 					</div>
 				</div>
 			</div>
-			</div>
-					<!-- التزييل -->
-			<div class="footer_bar">
+		</div>
+
+		<!-- التزييل -->
+
+		<div class="footer_bar">
 			<div class="container">
 				<div class="row">
 					<div class="col">
@@ -165,6 +175,7 @@
 		</div>
 		</footer>
 	</div>
+
 	<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
 	<script src="{% static 'styles/bootstrap4/popper.js' %}"></script>
 	<script src="{% static 'styles/bootstrap4/bootstrap.min.js' %}"></script>
@@ -175,3 +186,4 @@
 </body>
 
 </html>
+--- END OF FILE trips.html ---

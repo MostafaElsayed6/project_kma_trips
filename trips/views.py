@@ -13,7 +13,7 @@ def index(request):
 
 def trips_list(request):
     all_trips = Trip.objects.all().order_by('-date')
-    return render(request,'trips/trips1.html', {'all_trips': all_trips})
+    return render(request,'trips/trips.html', {'all_trips': all_trips})
 
 def trip_form(request, trip_id):
     trip = get_object_or_404(Trip, id=trip_id)  # جلب بيانات الرحلة
