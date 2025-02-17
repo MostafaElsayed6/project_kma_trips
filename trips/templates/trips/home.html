@@ -109,33 +109,33 @@
 
 
 		<!-- احدث الرحلات -->
-		<div class="owl-carousel owl-theme recent_slider">
-			{% for trip in trips %}
-			<div class="owl-item">
-				<div class="recent_item">
-					<div class="recent_item_inner">
-						<div class="recent_item_image">
-							<img src="{{ trip.image.url }}" alt="{{ trip.title }}">
-						</div>
-						<div class="recent_item_body text-center">
-							<div class="recent_item_location">{{ trip.title }}</div>
-							<div class="recent_item_title">
-								{% comment %} <a href="{% url 'trip_detail' trip.id %}">{{ trip.title }}</a> {% endcomment %}
+			<div class="owl-carousel owl-theme recent_slider">
+				{% for trip in trips %}
+				<div class="owl-item">
+					<div class="recent_item">
+						<div class="recent_item_inner">
+							<div class="recent_item_image">
+								<img src="{{ trip.image.url }}" alt="{{ trip.title }}">
 							</div>
-							<div class="recent_item_price">{{ trip.price }} EGP</div>
-						</div>
-						<div class="recent_item_footer d-flex flex-row align-items-center justify-content-start">
-							<div>
-								<div class="recent_icon"><img src="{% static 'images/icon_2.png' %}" alt=""></div>
-								<span>{{ trip.duration }}</span>
+							<div class="recent_item_body text-center">
+								<div class="recent_item_location">{{ trip.title }}</div>
+								<div class="recent_item_title">
+									{% comment %} <a href="{% url 'trip_detail' trip.id %}">{{ trip.title }}</a> {% endcomment %}
+								</div>
+								<div class="recent_item_price">{{ trip.price }} EGP</div>
+							</div>
+							<div class="recent_item_footer d-flex flex-row align-items-center justify-content-start">
+								<div>
+									<div class="recent_icon"><img src="{% static 'images/icon_2.png' %}" alt=""></div>
+									<span>{{ trip.duration }}</span>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
+				{% endfor %}
 			</div>
-			{% endfor %}
-		</div>
-		
+		</div>				
 
 							</div>
 							<div
