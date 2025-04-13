@@ -1,7 +1,0 @@
-<form method="post">
-    {% csrf_token %}
-    <h2>حجز رحلة: {{ trip.title }}</h2>
-    <p>الأماكن المتبقية: {{ trip.capacity }}</p>
-    <input type="number" name="seats" min="1" max="{{ trip.capacity }}" value="1">
-    <button type="submit">تأكيد الحجز</button>  
-    </form>

@@ -1,181 +1,168 @@
 {% load static %}
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl"> <!-- تعديل للغة العربية والاتجاه -->
 
 <head>
     <meta charset="UTF-8">
-    <title>Collecting Data</title>
+    <title>حجز رحلة: {{ trip.title }}</title> <!-- عنوان أوضح -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- استخدام نسخة Bootstrap تدعم RTL أو إضافة ملف CSS لـ RTL -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{% static 'styles/form.css' %}"> <!-n->
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-v4-rtl/dist/css/bootstrap-rtl.min.css"> --> <!-- مثال لـ Bootstrap RTL -->
+    <link rel="stylesheet" href="{% static 'styles/form.css' %}">
     <style>
-        /* Styling for the message box */
-        #responseMessage {
+        /* Styling for Django message box */
+        .django-messages {
             position: fixed;
-            top: 50%;
+            top: 20px; /* تعديل الموضع */
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translateX(-50%);
             z-index: 9999;
-            width: 80%;
+            width: 80%; /* أو عرض مناسب */
+            max-width: 600px;
             text-align: center;
         }
-
-        /* Additional styling to make the message box look better */
-        .alert {
-            width: 50%;
-            margin: 0 auto;
+        .card {
+            margin-top: 80px; /* إضافة مسافة علوية لتجنب تداخل الرسائل */
+        }
+        label {
+            font-weight: bold; /* جعل العناوين أوضح */
+        }
+        .data label { display: inline-block; margin-left: 5px;} /* تحسين عرض بيانات الرحلة */
+        .data p { display: inline;}
+        .form-control:invalid {
+             border-color: #dc3545; /* لون أحمر للحقول غير الصالحة (بسبب required) */
         }
     </style>
 </head>
 
 <body class="container">
 
-    <form class="container" id="contactForm">
+    <!-- منطقة عرض رسائل Django -->
+    {% if messages %}
+    <div class="django-messages">
+        {% for message in messages %}
+        <!-- تم تحسين عرض الألوان للرسائل المختلفة -->
+        <div class="alert {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}alert-danger{% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}alert-warning{% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}alert-success{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- النموذج يرسل الآن إلى مسار Django الصحيح -->
+    <!-- استخدم novalidate لمنع التحقق الافتراضي للمتصفح والاعتماد على تحقق Django ورسائله -->
+    <form class="container" id="contactForm" method="post" action="{% url 'trip_form' trip.id %}" novalidate>
+        {% csrf_token %}
         <div class="card">
             <div class="card-body">
-                
+
                 <h2 class="text-primary">ارسال نموذج حجز رحلة</h2>
-                <!-- User Data Fields -->
+                <hr>
+                <!-- حقول بيانات المستخدم -->
+                <h4 class="mt-3">بيانات المستخدم</h4>
                 <div class="form-group">
-                    <label for="name">اسم المستخدم ثلاثي</label>
-                    <input type="text" class="form-control" id="{{name}}" placeholder="ادخل اسمك" required>
+                    <label for="nameField">الاسم الثلاثي <span class="text-danger">*</span></label> <!-- علامة للإشارة للحقول المطلوبة -->
+                    <input type="text" class="form-control" id="nameField" name="nameField" placeholder="ادخل اسمك الكامل" required value="{{ request.POST.nameField | default:'' }}">
                 </div>
 
                 <div class="form-group">
-                    <label for="email">البريد الاليكتروني</label>
-                    <input type="email" class="form-control" id="{{email}}" placeholder="name@example.com" required>
+                    <label for="emailField">البريد الالكتروني <span class="text-danger">*</span></label>
+                    <input type="email" class="form-control" id="emailField" name="emailField" placeholder="name@example.com" required value="{{ request.POST.emailField | default:'' }}">
                 </div>
 
                 <div class="form-group">
-                    <label for="phone">هاتف المستخدم</label>
-                    <input type="number" class="form-control" id="{{phone}}" placeholder="ادخل رقم هاتفك" required>
+                    <label for="phoneField">رقم الهاتف <span class="text-danger">*</span></label>
+                    <input type="tel" class="form-control" id="phoneField" name="phoneField" placeholder="مثال: 05xxxxxxxx" required pattern="[0-9+ ]{7,}" title="أدخل رقم هاتف صحيح" value="{{ request.POST.phoneField | default:'' }}">
                 </div>
 
                 <div class="form-group">
-                    <label for="address">العنوان</label>
-                    <input type="text" class="form-control" id="{{address}}" placeholder="ادخل عنوانك" required>
+                    <label for="addressField">العنوان <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="addressField" name="addressField" placeholder="ادخل عنوانك" required value="{{ request.POST.addressField | default:'' }}">
                 </div>
 
                 <div class="form-group">
-                    <label for="date-time">وقت وتاريخ الرحلة</label>
-                    <input type="datetime-local" class="form-control" id="{{dtrip_datetime}}" required>
+                    <label for="dateTimeField">التاريخ والوقت المطلوب للرحلة <span class="text-danger">*</span></label>
+                    <input type="datetime-local" class="form-control" id="dateTimeField" name="dateTimeField" required value="{{ request.POST.dateTimeField | default:'' }}" min="{{ trip.date|date:'Y-m-d\TH:i' }}"> <!-- (اختياري) منع اختيار تاريخ قبل تاريخ الرحلة الأساسي إن وجد -->
                 </div>
 
-                <!-- Static Trip Information (Dynamic Data from Django Model) -->
-                <h4 class="data">معلومات الرحلة</h4>
+                <!-- معلومات الرحلة الثابتة (تُملأ من Django context) -->
+                <h4 class="data mt-4">معلومات الرحلة المحجوزة</h4>
 
-                <div class="form-group">
-                    <label>اسم الرحلة :</label><p id="trip-name">{{ trip.title }}</p>
+                <div class="form-group data">
+                    <label>اسم الرحلة:</label><p id="trip-name">{{ trip.title }}</p>
                 </div>
 
-                <div class="form-group">
-                    <label>موقع الرحلة :</label><p id="trip-location">{{ trip.location }}</p>
+                <div class="form-group data">
+                    <label>موقع الرحلة:</label><p id="trip-location">{{ trip.location }}</p>
                 </div>
 
-                <div class="form-group">
-                    <label>هاتف المسؤول :</label><p id="trip-phone">{{ trip.responsible_phone }}</p>
+                <div class="form-group data">
+                    <label>هاتف المسؤول:</label><p id="trip-phone">{{ trip.responsible_phone }}</p>
                 </div>
 
-                <div class="form-group">
-                    <label>التفاصيل :</label><p id="trip-details">{{ trip.description }}</p>
+                <div class="form-group data">
+                    <label>التفاصيل:</label><p id="trip-details" style="white-space: pre-wrap;">{{ trip.description }}</p> <!-- للحفاظ على تنسيق النص -->
+                </div>
+                 <div class="form-group data">
+                    <label>السعر:</label><p>{{ trip.price }}</p> <!-- عرض السعر -->
+                </div>
+                 <div class="form-group data">
+                    <label>المدة:</label><p>{{ trip.duration }}</p> <!-- عرض المدة -->
                 </div>
 
             </div>
-            <div class="butt">
-                <button type="submit" class="button" style="margin: 25px;" id="submitButton">
-                    تأكيد الارسال
+            <div class="butt text-center"> <!-- توسيط الزر -->
+                <button type="submit" class="btn btn-primary btn-lg" style="margin: 25px;" id="submitButton">
+                    تأكيد الحجز
                 </button>
             </div>
         </div>
     </form>
 
-    <!-- Message to user after submission -->
-    <div id="responseMessage" class="alert alert-success" style="display: none;"></div>
-
-    <script src="https://www.gstatic.com/firebasejs/3.7.4/firebase.js"></script>
+    <!-- تم إزالة الجافاسكربت الخاصة بـ Firebase -->
 
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyBWC-JdelmmD48bJdhny0pECiO1zHY-uZ0",
-            authDomain: "watertrips2.firebaseapp.com",
-            databaseURL: "https://watertrips2-default-rtdb.firebaseio.com",
-            projectId: "watertrips2",
-            storageBucket: "watertrips2.firebasestorage.app",
-            messagingSenderId: "967509042306",
-            appId: "1:967509042306:web:c1c5be0d034ec17bcec09b",
-            measurementId: "G-LENBJERJEY"
-        };
+        // جافاسكربت اختيارية لتحسين تجربة المستخدم
 
-        firebase.initializeApp(firebaseConfig);
-        let messagesRef = firebase.database().ref('booking-operations');
+        // 1. تعطيل الزر عند الإرسال لمنع الإرسال المزدوج
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            // يمكنك إضافة تحقق بسيط هنا بالجافاسكربت قبل التعطيل إذا أردت
+            if (this.checkValidity()) { // تحقق من صحة الحقول المطلوبة (required, pattern, etc.)
+                const submitButton = document.getElementById('submitButton');
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> جارٍ الارسال...';
+            } else {
+                // إذا كانت هناك أخطاء تحقق في المتصفح، لا تعطل الزر للسماح للمستخدم بالتصحيح
+                // المتصفح سيظهر رسائل الخطأ الافتراضية (ما لم نستخدم novalidate ونعتمد كليا على Django)
+                // إذا استخدمت novalidate في الفورم، ستحتاج لإظهار الأخطاء بنفسك هنا أو الاعتماد على رسائل Django عند إعادة التحميل
+                 console.log("Form is invalid. Preventing disabling submit button.");
+            }
+        });
 
-        document.getElementById('contactForm').addEventListener('submit', submitForm);
+        // 2. (اختياري) إخفاء رسائل Django تلقائيًا بعد فترة
+         $(document).ready(function() {
+             // تأكد من تضمين Bootstrap JS أدناه لهذا الغرض
+             window.setTimeout(function() {
+                 $(".django-messages .alert").fadeTo(500, 0).slideUp(500, function(){
+                     $(this).closest('.django-messages').remove(); // إزالة الحاوية كلها إذا كانت فارغة
+                 });
+             }, 7000); // 7 ثوانٍ
 
-
-        function submitForm(e) {
-            e.preventDefault();
-
-            // Get user data
-            let name = getInputVal('name');
-            let email = getInputVal('email');
-            let phone = getInputVal('phone');
-            let address = getInputVal('address');
-            let dateTime = getInputVal('date-time');
-
-            // Get trip data from HTML elements (now populated by Django)
-            let tripName = document.getElementById('trip-name').innerText;
-            let tripLocation = document.getElementById('trip-location').innerText;
-            let tripPhone = document.getElementById('trip-phone').innerText;
-            let tripDetails = document.getElementById('trip-details').innerText;
-
-
-            // Disable the submit button to prevent multiple submissions
-            document.getElementById('submitButton').disabled = true;
-
-            // Save data to Firebase
-            saveBookingData(name, email, phone, address, dateTime, tripName, tripLocation, tripPhone, tripDetails);
-
-            // Display success message
-            document.getElementById('responseMessage').innerHTML = `
-                شكراً لك, ${name}! تم ارسال نموذج الحجز بنجاح.
-            `;
-            document.getElementById('responseMessage').style.display = 'block';
-
-            // Clear the form after submission
-            document.getElementById('contactForm').reset();
-
-            // Redirect to the previous page after a short delay (3 seconds)
-            setTimeout(function() {
-                window.location.href = "{% url 'trips_list' %}"; // Redirect to trips list page
-            }, 3000);
-        }
-
-        // Function to get input values
-        function getInputVal(id) {
-            return document.getElementById(id).value;
-        }
-
-        // Function to save booking data to Firebase
-        function saveBookingData(name, email, phone, address, dateTime, tripName, tripLocation, tripPhone, tripDetails) {
-            let newBookingRef = messagesRef.push();
-            newBookingRef.set({
-                user: {
-                    name: name,
-                    email: email,
-                    phone: phone,
-                    address: address,
-                    dateTime: dateTime
-                },
-                trip: {
-                    name: tripName,
-                    location: tripLocation,
-                    phone: tripPhone,
-                    details: tripDetails
-                }
+            // تأكد من عمل زر الإغلاق في رسائل Bootstrap
+            $('.django-messages .alert .close').on('click', function(e) {
+                 $(this).closest('.alert').fadeTo(500, 0).slideUp(500);
             });
-        }
+         });
     </script>
 
-</body>
+    <!-- تضمين Bootstrap JS (ضروري لـ alert dismissal وبعض وظائف التحقق إذا لم تستخدم novalidate) -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script>
 
+</body>
 </html>

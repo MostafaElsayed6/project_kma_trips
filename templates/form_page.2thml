@@ -58,10 +58,10 @@
                     <input type="text" class="form-control" id="address" name="address" placeholder="ادخل عنوانك" required>
                 </div>
 
-                <div class="form-group">
+                {% comment %} <div class="form-group">
                     <label for="date-time">وقت وتاريخ الرحلة</label>
                     <input type="datetime-local" class="form-control" id="date-time" name="trip_datetime" required>
-                </div>
+                </div> {% endcomment %}
 
                 <!-- Static Trip Information (Dynamic Data from Django Model) -->
                 <h4 class="data">معلومات الرحلة</h4>

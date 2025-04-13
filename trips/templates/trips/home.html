@@ -107,7 +107,9 @@
 			</div>
 		</div>
 
-
+		<br>
+		<br>
+		<br>
 		<!-- احدث الرحلات -->
 			<div class="owl-carousel owl-theme recent_slider">
 				{% for trip in trips %}
@@ -120,7 +122,8 @@
 							<div class="recent_item_body text-center">
 								<div class="recent_item_location">{{ trip.title }}</div>
 								<div class="recent_item_title">
-									{% comment %} <a href="{% url 'trip_detail' trip.id %}">{{ trip.title }}</a> {% endcomment %}
+									<a href="{% url 'trip_form' trip.id %}">{{ trip.title }}</a>
+									
 								</div>
 								<div class="recent_item_price">{{ trip.price }} EGP</div>
 							</div>

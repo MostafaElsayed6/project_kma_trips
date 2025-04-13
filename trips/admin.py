@@ -1,8 +1,8 @@
 # في ملف trips/admin.py
 from django.contrib import admin
-from .models import Trip
+from .models import Trip,UserInput
 # from .models import Booking
-
+# from .models import UserInput
 
 
 @admin.register(Trip)
@@ -12,8 +12,11 @@ class TripAdmin(admin.ModelAdmin):
     list_filter = ('date',)
 
 
-# @admin.register(Booking)
-# class BookingAdmin(admin.ModelAdmin):
-#     list_display = ('user_name', 'trip', 'booking_date')
-#     list_filter = ('trip',)
-#     search_fields = ('user_name', 'email', 'trip__title')
+admin.site.register(UserInput)
+# class UserInputAdmin(admin.ModelAdmin):
+#     list_display = ('name', 'email', 'phone', 'formatted_date')  # تأكد من إضافة الخاصية هنا
+
+# admin.site.register(UserInput, UserInputAdmin)
+#     # def formatted_date(self, obj):
+    #     return obj.trip_dateTime.strftime("%Y-%m-%d %H:%M")
+    # formatted_date.short_description = 'تاريخ الرحلة'
